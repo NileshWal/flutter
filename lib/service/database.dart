@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-part 'package:sample_todo_app/service/database.g.dart';
+import '../entity/todo_entity_table.dart';
 
-class MyDatabase extends _$database {
+part 'database.g.dart';
+
+@DriftDatabase(tables: [TodoTable])
+class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
   @override
@@ -17,7 +20,7 @@ class MyDatabase extends _$database {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'todo.sqlite'));
+    final file = File(path.join(dbFolder.path, 'todo.sqlite'));
 
     return NativeDatabase.createInBackground(file);
   });
