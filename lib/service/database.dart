@@ -15,6 +15,19 @@ class MyDatabase extends _$MyDatabase {
 
   @override
   int get schemaVersion => 1;
+
+  Future<List<TodoTableData>> getTodoList() async {
+    return await select(todoTable).get();
+  }
+
+  Future<TodoTableData> getTodoItem(int id) async {
+    return await (select(todoTable)..where((tbl) => tbl.id.equals(id)))
+        .getSingle();
+  }
+
+  Future<bool> updateTodoItem(TodoTableCompanion entity) async {
+    return await update(todoTable).replace(entity);
+  }
 }
 
 LazyDatabase _openConnection() {
