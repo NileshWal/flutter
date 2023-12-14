@@ -12,7 +12,7 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class DetectLifecycle extends ConsumerStatefulWidget {
-  const DetectLifecycle({Key? key}) : super(key: key);
+  const DetectLifecycle({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {

@@ -44,7 +44,7 @@ class _TodoListViewState extends ConsumerState<TodoListView> {
                     isVisible: isUnfinishedVisible,
                     todos: allTodos,
                     index: index,
-                    lineThrough: allTodos[index].completed,
+                    lineThrough: allTodos[index].completed??false,
                   ),
                 ),
               ),

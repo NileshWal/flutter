@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,12 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:sample_todo_app/controllers/todo_controller.dart';
 
 import '../../models/todo.dart';
+import '../../service/database.dart';
 
 class AddTodoScreen extends ConsumerStatefulWidget {
   const AddTodoScreen({
-    Key? key,
+    super.key,
     this.todo,
-  }) : super(key: key);
+  });
+
   final Todo? todo;
 
   @override
@@ -39,20 +42,24 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
   @override
   Widget build(BuildContext context) {
     void saveTodo() {
+      final formattedDate =
+          DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(DateTime.now());
+      final formattedDateObj = DateTime.parse(formattedDate);
+      final todoEntity = TodoTableCompanion(
+          id: Value(formattedDateObj.millisecondsSinceEpoch),
+          serialNumber: Value(srNoCounter),
+          task: Value(controller.text.trim()),
+          description: Value(controller.text.trim()),
+          createdDate: Value(formattedDateObj),
+          modifiedDate: Value(formattedDateObj),
+          completed: const Value(false),
+          edited: const Value(false),
+          lastViewed: const Value(false));
+      srNoCounter++;
       if (widget.todo == null) {
-        final formattedDate =
-        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(DateTime.now());
-        final formattedDateObj = DateTime.parse(formattedDate);
-        final todo = Todo(
-            task: controller.text.trim(),
-            description: controller.text.trim(),
-            id: formattedDateObj.millisecondsSinceEpoch,
-            serialNumber: srNoCounter,
-            createdDate: formattedDateObj,
-            modifiedDate: formattedDateObj);
-        srNoCounter++;
-        ref.read(todoControllerProvider).addTodo(todo);
+        ref.read(todoControllerProvider).addTodo(todoEntity);
       } else {
+        MyDatabase().updateTodoItem(todoEntity);
         ref
             .read(todoControllerProvider)
             .editTodo(widget.todo!.id.toString(), controller.text.trim());
@@ -74,24 +81,20 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: controller,
-              autofocus: true,
-              onSubmitted: (_) {
-                saveTodo();
-              },
-              onChanged: (_) => canSubmit(),
-              decoration: InputDecoration(
-                hintText: 'Task',
-                label: const Text('Your task'),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-              ),
+        child: TextField(
+          controller: controller,
+          autofocus: true,
+          onSubmitted: (_) {
+            saveTodo();
+          },
+          onChanged: (_) => canSubmit(),
+          decoration: InputDecoration(
+            hintText: 'Task',
+            label: const Text('Your task'),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
             ),
-          ],
+          ),
         ),
       ),
     );

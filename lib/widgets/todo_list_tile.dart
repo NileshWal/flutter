@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_todo_app/routing/go_router.dart';
+import 'package:sample_todo_app/service/database.dart';
 
 import '../controllers/todo_controller.dart';
-import '../models/todo.dart';
 
 class TodoListTile extends ConsumerWidget {
   const TodoListTile({
-    Key? key,
+    super.key,
     required this.isVisible,
     required this.todos,
     required this.index,
     required this.lineThrough,
-  }) : super(key: key);
+  });
 
   final bool isVisible;
-  final List<Todo> todos;
+  final List<TodoTableData> todos;
   final int index;
   final bool lineThrough;
 
@@ -50,13 +50,21 @@ class TodoListTile extends ConsumerWidget {
           leading: Checkbox(
             value: todos[index].completed,
             onChanged: (_) {
-              final todoData = todos[index];
-              todoData.completed = !todos[index].completed;
-              ref.read(todoControllerProvider).toggleTodo(todoData);
+              final todoEntity = TodoTableData(
+                  id: todos[index].id,
+                  serialNumber: todos[index].serialNumber,
+                  task: todos[index].task,
+                  description: todos[index].description,
+                  createdDate: todos[index].createdDate,
+                  modifiedDate: todos[index].modifiedDate,
+                  completed: !(todos[index].completed ?? true),
+                  edited: todos[index].edited,
+                  lastViewed: todos[index].lastViewed);
+              ref.read(todoControllerProvider).toggleTodo(todoEntity);
             },
           ),
           title: Text(
-            todos[index].task,
+            todos[index].task ?? "",
             style: lineThrough
                 ? const TextStyle(decoration: TextDecoration.lineThrough)
                 : null,

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sample_todo_app/service/database.dart';
 
 import '../models/todo.dart';
 import '../repositories/todo_repository.dart';
@@ -8,7 +9,7 @@ class TodoController {
 
   TodoController(this.ref);
 
-  void addTodo(Todo todo) {
+  void addTodo(TodoTableCompanion todo) {
     ref.read(todoRepositoryProvider.notifier).postTodoEntry(todo);
   }
 
@@ -20,7 +21,7 @@ class TodoController {
     ref.read(todoRepositoryProvider.notifier).editTodo(id, title);
   }
 
-  void toggleTodo(Todo todo) {
+  void toggleTodo(TodoTableData todo) {
     ref.read(todoRepositoryProvider.notifier).updateTodo(todo);
   }
 }

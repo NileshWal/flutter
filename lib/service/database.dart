@@ -28,12 +28,20 @@ class MyDatabase extends _$MyDatabase {
   Future<bool> updateTodoItem(TodoTableCompanion entity) async {
     return await update(todoTable).replace(entity);
   }
+
+  Future<int> insertTodoItem(TodoTableCompanion entity) async {
+    return await into(todoTable).insert(entity);
+  }
+
+  Future<int> deleteTodoItem(int id) async {
+    return await (delete(todoTable)..where((tbl) => tbl.id.equals(id))).go();
+  }
 }
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(path.join(dbFolder.path, 'todo.sqlite'));
+    final databaseFilePath = await getApplicationDocumentsDirectory();
+    final file = File(path.join(databaseFilePath.path, 'todo.sqlite'));
 
     return NativeDatabase.createInBackground(file);
   });
