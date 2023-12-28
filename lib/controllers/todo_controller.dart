@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_todo_app/service/database.dart';
 
-import '../models/todo.dart';
 import '../repositories/todo_repository.dart';
 
 class TodoController {

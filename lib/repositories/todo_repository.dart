@@ -49,14 +49,13 @@ class TodoRepository extends StateNotifier<List<TodoTableData>> {
         completed: Value(todo.completed),
         edited: Value(todo.edited),
         lastViewed: Value(todo.lastViewed));
-    db.updateTodoItem(todoEntity);
+    await db.updateTodoItem(todoEntity);
+    await loadTodos();
   }
 
   Future<void> deleteTodo(String id) async {
-    var response = await NetworkApi().deleteTodo(id);
-    if (response != null && response.statusCode == 200) {
-      loadTodos();
-    }
+    await db.deleteTodoItem(int.parse(id));
+    await loadTodos();
   }
 
   @override
