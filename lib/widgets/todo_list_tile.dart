@@ -51,7 +51,8 @@ class TodoListCard extends ConsumerWidget {
             child: Card(
                 elevation: 2,
                 margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                color: Colors.white,
+                surfaceTintColor: Colors.white,
+                shadowColor: const Color(0xff949494),
                 child: Row(children: [
                   Expanded(
                       flex: 1,
