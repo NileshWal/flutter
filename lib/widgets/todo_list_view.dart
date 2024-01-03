@@ -40,7 +40,7 @@ class _TodoListViewState extends ConsumerState<TodoListView> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   childCount: allTodos.length,
-                  (context, index) => TodoListTile(
+                  (context, index) => TodoListCard(
                     isVisible: isUnfinishedVisible,
                     todos: allTodos,
                     index: index,

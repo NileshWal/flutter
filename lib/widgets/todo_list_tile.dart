@@ -6,8 +6,8 @@ import 'package:sample_todo_app/service/database.dart';
 
 import '../controllers/todo_controller.dart';
 
-class TodoListTile extends ConsumerWidget {
-  const TodoListTile({
+class TodoListCard extends ConsumerWidget {
+  const TodoListCard({
     super.key,
     required this.isVisible,
     required this.todos,
@@ -43,41 +43,56 @@ class TodoListTile extends ConsumerWidget {
               .read(todoControllerProvider)
               .removeTodo(todos[index].id.toString());
         },
-        child: ListTile(
-          onTap: () {
-            context.pushNamed(AppRoute.addTodoScreen.name, extra: todos[index]);
-          },
-          leading: Checkbox(
-            value: todos[index].completed,
-            onChanged: (_) {
-              final todoEntity = TodoTableData(
-                  id: todos[index].id,
-                  serialNumber: todos[index].serialNumber,
-                  task: todos[index].task,
-                  description: todos[index].description,
-                  createdDate: todos[index].createdDate,
-                  modifiedDate: todos[index].modifiedDate,
-                  completed: !(todos[index].completed ?? true),
-                  edited: todos[index].edited,
-                  lastViewed: todos[index].lastViewed);
-              ref.read(todoControllerProvider).toggleTodo(todoEntity);
+        child: InkWell(
+            onTap: () {
+              context.pushNamed(AppRoute.addTodoScreen.name,
+                  extra: todos[index]);
             },
-          ),
-          title: Text(
-            todos[index].task ?? "",
-            style: lineThrough
-                ? const TextStyle(decoration: TextDecoration.lineThrough)
-                : null,
-          ),
-          trailing: IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              ref
-                  .read(todoControllerProvider)
-                  .removeTodo(todos[index].id.toString());
-            },
-          ),
-        ),
+            child: Card(
+                elevation: 2,
+                margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+                color: Colors.white,
+                child: Row(children: [
+                  Expanded(
+                      flex: 1,
+                      child: Checkbox(
+                        value: todos[index].completed,
+                        onChanged: (_) {
+                          final todoEntity = TodoTableData(
+                              id: todos[index].id,
+                              serialNumber: todos[index].serialNumber,
+                              task: todos[index].task,
+                              description: todos[index].description,
+                              createdDate: todos[index].createdDate,
+                              modifiedDate: todos[index].modifiedDate,
+                              completed: !(todos[index].completed ?? true),
+                              edited: todos[index].edited,
+                              lastViewed: todos[index].lastViewed);
+                          ref
+                              .read(todoControllerProvider)
+                              .toggleTodo(todoEntity);
+                        },
+                      )),
+                  Expanded(
+                      flex: 4,
+                      child: Text(
+                        todos[index].task ?? "",
+                        style: lineThrough
+                            ? const TextStyle(
+                                decoration: TextDecoration.lineThrough)
+                            : null,
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          ref
+                              .read(todoControllerProvider)
+                              .removeTodo(todos[index].id.toString());
+                        },
+                      ))
+                ]))),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sample_todo_app/controllers/todo_controller.dart';
 
-import '../../models/todo.dart';
 import '../../service/database.dart';
 
 class AddTodoScreen extends ConsumerStatefulWidget {
@@ -14,7 +13,7 @@ class AddTodoScreen extends ConsumerStatefulWidget {
     this.todo,
   });
 
-  final Todo? todo;
+  final TodoTableData? todo;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddTodoScreenState();
