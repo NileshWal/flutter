@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample_todo_app/repositories/todo_repository.dart';
-import 'package:sample_todo_app/widgets/todo_list_tile.dart';
+import 'package:sample_todo_app/widgets/todo_list_card.dart';
 
 class TodoListView extends ConsumerStatefulWidget {
   const TodoListView({
