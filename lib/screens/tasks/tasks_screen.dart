@@ -30,6 +30,7 @@ class _TasksScreenState extends State<TasksScreen> {
       ),
       body: const TodoListView(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xffc7c6c5),
         onPressed: () {
           context.pushNamed(AppRoute.addTodoScreen.name);
         },

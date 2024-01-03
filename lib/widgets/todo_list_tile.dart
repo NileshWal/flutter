@@ -49,6 +49,9 @@ class TodoListCard extends ConsumerWidget {
                   extra: todos[index]);
             },
             child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3.0),
+                ),
                 elevation: 2,
                 margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
                 surfaceTintColor: Colors.white,
