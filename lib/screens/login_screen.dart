@@ -29,15 +29,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    userNameTextArea.dispose();
+    passwordTextArea.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(""),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 30.0, right: 30.0, top: 220, bottom: 0),
+              padding: const EdgeInsets.fromLTRB(30.0, 220, 30.0, 0),
               child: TextField(
                 controller: userNameTextArea,
                 decoration: const InputDecoration(
@@ -47,8 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 30.0, right: 30.0, top: 15, bottom: 0),
+              padding: const EdgeInsets.fromLTRB(30.0, 15, 30.0, 0),
               child: TextField(
                 controller: passwordTextArea,
                 obscureText: true,
