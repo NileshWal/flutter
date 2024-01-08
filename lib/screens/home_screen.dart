@@ -22,8 +22,6 @@ class DetectLifecycle extends ConsumerStatefulWidget {
 
 class _DetectLifecycleState extends ConsumerState<DetectLifecycle>
     with WidgetsBindingObserver {
-  final appOpened = "CLIENT_TODO_APP_OPENED";
-  final appBackgrounded = "CLIENT_TODO_APP_BACKGROUND";
 
   @override
   void initState() {

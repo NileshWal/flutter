@@ -5,7 +5,6 @@ import 'package:sample_todo_app/screens/tasks/add_todo_screen.dart';
 import 'package:sample_todo_app/screens/tasks/tasks_screen.dart';
 import 'package:sample_todo_app/service/database.dart';
 
-import '../models/todo.dart';
 import '../screens/home_screen.dart';
 
 enum AppRoute {

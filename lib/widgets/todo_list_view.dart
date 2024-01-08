@@ -14,7 +14,6 @@ class TodoListView extends ConsumerStatefulWidget {
 
 class _TodoListViewState extends ConsumerState<TodoListView> {
   bool isUnfinishedVisible = true;
-  bool isFinishedVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +21,34 @@ class _TodoListViewState extends ConsumerState<TodoListView> {
 
     return allTodos.isEmpty
         ? const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  'Add some tasks',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-            ],
-          )
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Text(
+            'Add some tasks',
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+      ],
+    )
         : CustomScrollView(
-            slivers: [
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  childCount: allTodos.length,
-                  (context, index) => TodoListCard(
-                    isVisible: isUnfinishedVisible,
-                    todos: allTodos,
-                    index: index,
-                    lineThrough: allTodos[index].completed??false,
-                  ),
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: allTodos.length,
+                (context, index) =>
+                TodoListCard(
+                  isVisible: isUnfinishedVisible,
+                  todos: allTodos,
+                  index: index,
+                  lineThrough: allTodos[index].completed ?? false,
                 ),
-              ),
-            ],
-          );
+          ),
+        ),
+      ],
+    );
   }
 }
