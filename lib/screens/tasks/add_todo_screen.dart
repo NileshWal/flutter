@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sample_todo_app/controllers/todo_controller.dart';
+import 'package:sample_todo_app/utils/practice_utils.dart';
 
 import '../../service/database.dart';
 
@@ -20,8 +21,6 @@ class AddTodoScreen extends ConsumerStatefulWidget {
 }
 
 class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
-  final todoCreated = "CLIENT_TODO_CREATED";
-  final todoEdited = "CLIENT_TODO_EDITED";
   late TextEditingController controller;
   bool isSubmitVisible = true;
   static int srNoCounter = 0;
@@ -40,41 +39,21 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void saveTodo() {
-      final formattedDate =
-          DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(DateTime.now());
-      final formattedDateObj = DateTime.parse(formattedDate);
-      final todoEntity = TodoTableCompanion(
-          id: Value(formattedDateObj.millisecondsSinceEpoch),
-          serialNumber: Value(srNoCounter),
-          task: Value(controller.text.trim()),
-          description: Value(controller.text.trim()),
-          createdDate: Value(formattedDateObj),
-          modifiedDate: Value(formattedDateObj),
-          completed: const Value(false),
-          edited: const Value(false),
-          lastViewed: const Value(false));
-      srNoCounter++;
-      if (widget.todo == null) {
-        ref.read(todoControllerProvider).addTodo(todoEntity);
-      } else {
-        MyDatabase().updateTodoItem(todoEntity);
-        ref
-            .read(todoControllerProvider)
-            .editTodo(widget.todo!.id.toString(), controller.text.trim());
-      }
-      context.pop();
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: controller.text.isEmpty
-            ? const Text('Add a task')
-            : const Text('Edit task'),
+            ? const Text(PracticeUtils.addNewTaskTitle)
+            : const Text(PracticeUtils.editExistingTaskTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: isSubmitVisible ? saveTodo : null,
+            onPressed: () {
+              if (isSubmitVisible) {
+                saveTodo(context);
+              } else {
+                null;
+              }
+            },
           ),
         ],
       ),
@@ -84,12 +63,12 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
           controller: controller,
           autofocus: true,
           onSubmitted: (_) {
-            saveTodo();
+            saveTodo(context);
           },
           onChanged: (_) => canSubmit(),
           decoration: InputDecoration(
-            hintText: 'Task',
-            label: const Text('Your task'),
+            hintText: PracticeUtils.taskHint,
+            label: const Text(PracticeUtils.yourTaskTitle),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
@@ -97,5 +76,31 @@ class _AddTodoScreenState extends ConsumerState<AddTodoScreen> {
         ),
       ),
     );
+  }
+
+  void saveTodo(BuildContext context) {
+    final formattedDate =
+        DateFormat(PracticeUtils.saveTodoDateFormat).format(DateTime.now());
+    final formattedDateObj = DateTime.parse(formattedDate);
+    final todoEntity = TodoTableCompanion(
+        id: Value(formattedDateObj.millisecondsSinceEpoch),
+        serialNumber: Value(srNoCounter),
+        task: Value(controller.text.trim()),
+        description: Value(controller.text.trim()),
+        createdDate: Value(formattedDateObj),
+        modifiedDate: Value(formattedDateObj),
+        completed: const Value(false),
+        edited: const Value(false),
+        lastViewed: const Value(false));
+    srNoCounter++;
+    if (widget.todo == null) {
+      ref.read(todoControllerProvider).addTodo(todoEntity);
+    } else {
+      MyDatabase().updateTodoItem(todoEntity);
+      ref
+          .read(todoControllerProvider)
+          .editTodo(widget.todo!.id.toString(), controller.text.trim());
+    }
+    context.pop();
   }
 }

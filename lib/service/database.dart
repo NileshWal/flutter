@@ -13,6 +13,8 @@ part 'database.g.dart';
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  static String databaseName = 'todo.sqlite';
+
   @override
   int get schemaVersion => 1;
 
@@ -41,7 +43,8 @@ class MyDatabase extends _$MyDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final databaseFilePath = await getApplicationDocumentsDirectory();
-    final file = File(path.join(databaseFilePath.path, 'todo.sqlite'));
+    final file =
+        File(path.join(databaseFilePath.path, MyDatabase.databaseName));
 
     return NativeDatabase.createInBackground(file);
   });

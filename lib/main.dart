@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sample_todo_app/routing/go_router.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
   runApp(const ProviderScope(child: MainApp()));
 }
 

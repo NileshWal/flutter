@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_todo_app/routing/go_router.dart';
+import 'package:sample_todo_app/utils/practice_utils.dart';
 
 import '../../widgets/todo_list_view.dart';
 
@@ -16,7 +17,7 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Tasks'),
+        title: const Text(PracticeUtils.taskScreenTitle),
       ),
       body: const TodoListView(),
       floatingActionButton: FloatingActionButton(

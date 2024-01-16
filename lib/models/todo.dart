@@ -9,6 +9,16 @@ class Todo {
   bool edited;
   bool lastViewed;
 
+  static String iDTag = 'id';
+  static String serialNumberTag = 'serialNumber';
+  static String taskTag = 'task';
+  static String descriptionTag = 'description';
+  static String createdDateTag = 'createdDate';
+  static String modifiedDateTag = 'modifiedDate';
+  static String completedTag = 'completed';
+  static String editedTag = 'edited';
+  static String lastViewedTag = 'lastViewed';
+
   Todo({
     required this.id,
     required this.serialNumber,
@@ -47,69 +57,69 @@ class Todo {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'serialNumber': serialNumber,
-      'task': task,
-      'description': description,
-      'createdDate': createdDate.toIso8601String(),
-      'modifiedDate': modifiedDate.toIso8601String(),
-      'completed': completed,
-      'edited': edited,
-      'lastViewed': lastViewed,
+      iDTag: id,
+      serialNumberTag: serialNumber,
+      taskTag: task,
+      descriptionTag: description,
+      createdDateTag: createdDate.toIso8601String(),
+      modifiedDateTag: modifiedDate.toIso8601String(),
+      completedTag: completed,
+      editedTag: edited,
+      lastViewedTag: lastViewed,
     };
   }
 
   factory Todo.fromMap(Map<String, dynamic> map) {
     return Todo(
-      id: map['id'] as int,
-      serialNumber: map['serialNumber'] as int,
-      task: map['task'] as String,
-      description: map['description'] as String,
-      createdDate: DateTime.parse(map['createdDate']),
-      modifiedDate: DateTime.parse(map['modifiedDate']),
-      completed: map['completed'] as bool,
-      edited: map['edited'] as bool,
-      lastViewed: map['lastViewed'] as bool,
+      id: map[Todo.iDTag] as int,
+      serialNumber: map[Todo.serialNumberTag] as int,
+      task: map[Todo.taskTag] as String,
+      description: map[Todo.descriptionTag] as String,
+      createdDate: DateTime.parse(map[Todo.createdDateTag]),
+      modifiedDate: DateTime.parse(map[Todo.modifiedDateTag]),
+      completed: map[Todo.completedTag] as bool,
+      edited: map[Todo.editedTag] as bool,
+      lastViewed: map[Todo.lastViewedTag] as bool,
     );
   }
 
   Map toJson() => {
-        'id': id,
-        'serialNumber': serialNumber,
-        'task': task,
-        'description': description,
-        'createdDate': createdDate.toIso8601String(),
-        'modifiedDate': modifiedDate.toIso8601String(),
-        'completed': completed,
-        'edited': edited,
-        'lastViewed': lastViewed,
+        iDTag: id,
+        serialNumberTag: serialNumber,
+        taskTag: task,
+        descriptionTag: description,
+        createdDateTag: createdDate.toIso8601String(),
+        modifiedDateTag: modifiedDate.toIso8601String(),
+        completedTag: completed,
+        editedTag: edited,
+        lastViewedTag: lastViewed,
       };
 
   Map<String, dynamic> toMapJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['serialNumber'] = serialNumber;
-    data['task'] = task;
-    data['description'] = description;
-    data['modifiedDate'] = modifiedDate.toIso8601String();
-    data['createdDate'] = createdDate.toIso8601String();
-    data['completed'] = completed;
-    data['edited'] = edited;
-    data['lastViewed'] = lastViewed;
+    data[iDTag] = id;
+    data[serialNumberTag] = serialNumber;
+    data[taskTag] = task;
+    data[descriptionTag] = description;
+    data[createdDateTag] = createdDate.toIso8601String();
+    data[modifiedDateTag] = modifiedDate.toIso8601String();
+    data[completedTag] = completed;
+    data[editedTag] = edited;
+    data[lastViewedTag] = lastViewed;
     return data;
   }
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     return Todo(
-      id: json['id'] as int,
-      serialNumber: json['serialNumber'] as int,
-      task: json['task'] as String,
-      description: json['description'] as String,
-      createdDate: DateTime.parse(json['createdDate']),
-      modifiedDate: DateTime.parse(json['modifiedDate']),
-      completed: json['completed'] as bool,
-      edited: json['edited'] as bool,
-      lastViewed: json['lastViewed'] as bool,
+      id: json[Todo.iDTag] as int,
+      serialNumber: json[Todo.serialNumberTag] as int,
+      task: json[Todo.taskTag] as String,
+      description: json[Todo.descriptionTag] as String,
+      createdDate: DateTime.parse(json[Todo.createdDateTag]),
+      modifiedDate: DateTime.parse(json[Todo.modifiedDateTag]),
+      completed: json[Todo.completedTag] as bool,
+      edited: json[Todo.editedTag] as bool,
+      lastViewed: json[Todo.lastViewedTag] as bool,
     );
   }
 }

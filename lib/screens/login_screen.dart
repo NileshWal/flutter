@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample_todo_app/routing/go_router.dart';
+import 'package:sample_todo_app/utils/practice_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController userNameTextArea = TextEditingController();
   TextEditingController passwordTextArea = TextEditingController();
   bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
 
   void updateUI(BuildContext context) async {
     setState(() {
@@ -28,6 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void submit(context) {
+    final isValid = _formKey.currentState?.validate();
+    if (isValid == null && (isValid != null && !isValid)) {
+      return;
+    }
+    _formKey.currentState?.save();
+    updateUI(context);
+  }
+
   @override
   void dispose() {
     userNameTextArea.dispose();
@@ -38,9 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: const Text(""),
       ),
       body: SingleChildScrollView(
@@ -48,23 +57,46 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(30.0, 220, 30.0, 0),
-              child: TextField(
+              child: TextFormField(
                 controller: userNameTextArea,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Username',
+                  labelText: PracticeUtils.usernameLabel,
                 ),
+                validator: (userNameValue) {
+                  RegExp regex =
+                      RegExp(PracticeUtils.userNamePattern.toString());
+                  if (userNameValue == null || userNameValue.isEmpty) {
+                    return PracticeUtils.inValidUsername;
+                  } else if (!regex.hasMatch(userNameValue)) {
+                    return PracticeUtils.inValidUsername;
+                  } else {
+                    return PracticeUtils.validUsername;
+                  }
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(30.0, 15, 30.0, 0),
-              child: TextField(
+              child: TextFormField(
                 controller: passwordTextArea,
                 obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Password',
+                  labelText: PracticeUtils.passwordLabel,
                 ),
+                validator: (value) {
+                  print('password value $value');
+                  if (value == null || value.isEmpty) {
+                    return PracticeUtils.inValidPassword;
+                  } else if (!RegExp(PracticeUtils.passwordPattern.toString())
+                      .hasMatch(value)) {
+                    return PracticeUtils.inValidPassword;
+                  } else {
+                    return PracticeUtils.validPassword;
+                  }
+                },
               ),
             ),
             SizedBox(
@@ -74,14 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(top: 20.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
+                      backgroundColor: Colors.blue, // background
+                      foregroundColor: Colors.white, // foreground
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       )),
-                  onPressed: () {
-                    updateUI(context);
-                  },
+                  onPressed: () => submit(context),
                   child: const Text(
                     'Log in ',
                     style: TextStyle(color: Colors.white, fontSize: 20),
@@ -102,5 +132,19 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+}
+
+extension extString on String {
+  bool get isValidName {
+    final nameRegExp =
+        RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+    return nameRegExp.hasMatch(this);
+  }
+
+  bool get isValidPassword {
+    final passwordRegExp = RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\><*~]).{8,}/pre>');
+    return passwordRegExp.hasMatch(this);
   }
 }
